@@ -1,0 +1,72 @@
+left:
+
+    cout<<"left"<<endl;
+    AVLNode* x = node;
+    AVLNode* y = node->getRight();
+    if(y->getLeft() != nullptr){
+        x->setRight(y->getLeft());
+        y->getLeft()->setParent(x);
+        y->setLeft(nullptr);
+    }
+
+    if(x->getParent() == nullptr){
+        root = y;
+        y->setParent(nullptr);
+    }
+    else if(x->getParent()->getLeft() == x){
+        x->getParent()->setLeft(y);
+        x->setParent(nullptr);
+    }
+    else{
+        x->getParent()->setRight(y);
+        x->setParent(nullptr);
+    }
+
+    x->setParent(y);
+    y->setLeft(x);
+
+
+right:
+
+    cout<<"right"<<endl;
+    AVLNode* y = node;
+    AVLNode* x = y->getLeft();
+    if(x->getRight() != nullptr){
+        y->setLeft(x->getRight());
+        x->getRight()->setParent(y);
+        x->setRight(nullptr);
+    }
+
+    if(y->getParent() == nullptr){
+        root = x;
+        x->setParent(nullptr);
+    }
+    else if(y->getParent()->getRight() == y){
+        y->getParent()->setRight(x);
+        y->setParent(nullptr);
+    }
+    else{
+        y->getParent()->setLeft(x);
+        y->setParent(nullptr);
+    }
+
+    y->setParent(x);
+    x->setRight(y);
+
+#################################
+    AVLTree* tree = this->getTree();
+    for(int i=0;i<lines.size();i++){
+        MetroStop* head = lines.at(i)->getNode();
+        if(head->getStopName() == "Dwarka Sec-21"){
+            AVLNode* avl = new AVLNode(head->getStopName());
+            avl->addMetroStop(head);
+            tree->setRoot(avl);
+            continue;
+        }
+        while(head!=NULL){
+            AVLNode* avl = new AVLNode(head->getStopName());
+            avl->addMetroStop(head);
+            tree->insert(avl,head);
+            head = head->getNextStop();
+        }
+    }
